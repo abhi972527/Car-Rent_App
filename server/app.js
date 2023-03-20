@@ -1,7 +1,7 @@
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
-const db = require("./config/db");
+const { connection } = require("./config/db");
 
 const userRouter = require('./routes/user');
 const vehicleRouter = require('./routes/vehicle');
@@ -16,15 +16,18 @@ const API_PREFIX = '/api'
 app.use(`${API_PREFIX}/user`, userRouter)
 app.use(`${API_PREFIX}/user`, vehicleRouter)
 
-app.get("/", (req, res) => res.send("welcome to backend"));
+// app.get("/", (req, res) => res.send("welcome to backend"));
 
-// await connection.then((res) => {
-//     console.log("Successfully connected to the database");
-// }).catch((err) => {
-//     console.log("Failed to connect to the database, exiting..", error);
-// })
+const PORT = process.env.PORT || 5000;
 
-const PORT = process.env.PORT;
-app.listen(PORT, () => {
-    console.log("Port running on", PORT);
+connection().then(() => {
+    app.listen(PORT, () => {
+        // try {
+        //     await connection
+        //     console.log("Successfully connected to the database");
+        // } catch (error) {
+        //     console.log("Failed to connect to the database, exiting..", error);
+        // }
+        console.log("Port running on", PORT);
+    })
 })
