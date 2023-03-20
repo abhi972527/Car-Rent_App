@@ -16,7 +16,7 @@ const API_PREFIX = '/api'
 app.use(`${API_PREFIX}/user`, userRouter)
 app.use(`${API_PREFIX}/user`, vehicleRouter)
 
-// app.get("/", (req, res) => res.send("welcome to backend"));
+app.get("/", (req, res) => res.send("welcome to backend"));
 
 // await connection.then((res) => {
 //     console.log("Successfully connected to the database");
