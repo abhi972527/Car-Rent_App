@@ -2,6 +2,7 @@ const express = require("express");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const { connection } = require("./config/db");
+require("dotenv").config();
 
 const userRouter = require('./routes/user');
 const vehicleRouter = require('./routes/vehicle');
