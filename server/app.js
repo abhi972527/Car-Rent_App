@@ -16,7 +16,7 @@ const API_PREFIX = '/api'
 app.use(`${API_PREFIX}/user`, userRouter)
 app.use(`${API_PREFIX}/user`, vehicleRouter)
 
-// app.get("/", (req, res) => res.send("welcome to backend"));
+app.get("/", (req, res) => res.send("welcome to backend"));
 
 const PORT = process.env.PORT || 5000;
 
