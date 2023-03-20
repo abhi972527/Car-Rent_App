@@ -18,7 +18,7 @@ app.use(`${API_PREFIX}/user`, vehicleRouter)
 
 app.get("/", (req, res) => res.send("welcome to backend"));
 
-const PORT = process.env.PORT || 5000;
+// const PORT = process.env.PORT || 5000;
 
 // connection().then(() => {
 //     app.listen(PORT, () => {
@@ -32,12 +32,12 @@ const PORT = process.env.PORT || 5000;
 //     })
 // })
 
-app.listen(PORT, async()=>{
+app.listen(process.env.PORT, async()=>{
     try {
         await connection;
         console.log("Database connected successfully");
     } catch (error) {
         console.log("Database not connected");
     }
-    console.log(`Server running on ${PORT}`);
+    console.log(`Server running on ${process.env.PORT}`);
 })
