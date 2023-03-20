@@ -1,7 +1,7 @@
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
-const { connection } = require("./config/db");
+// const { connection } = require("./config/db");
 require("dotenv").config();
 // const userRouter = require('./routes/user');
 // const vehicleRouter = require('./routes/vehicle');
@@ -34,7 +34,7 @@ app.get("/", (req, res) => res.send("welcome to backend"));
 
 app.listen(8000, async()=>{
     try {
-        await connection;
+        // await connection;
         console.log("Database connected successfully");
     } catch (error) {
         console.log("Database not connected");
