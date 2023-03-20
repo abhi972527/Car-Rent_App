@@ -4,7 +4,7 @@ const cors = require("cors");
 const { connection } = require("./config/db");
 
 const userRouter = require('./routes/user');
-const vehicleRouter = require('./routes/vehicle');
+// const vehicleRouter = require('./routes/vehicle');
 
 const app = express();
 

@@ -9,7 +9,7 @@ const userController = require("../controllers/user");
 // });
 
 router.post('/signUp', userController.register);
-router.post('/editProfile', userController.editProfile);
+// router.post('/editProfile', userController.editProfile);
 // router.post('/editProfile', upload.fields([{name: 'images', maxCount: 1}]), userController.editProfile);
 
 module.exports = router;
