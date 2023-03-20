@@ -20,14 +20,24 @@ app.get("/", (req, res) => res.send("welcome to backend"));
 
 const PORT = process.env.PORT || 5000;
 
-connection().then(() => {
-    app.listen(PORT, () => {
-        // try {
-        //     await connection
-        //     console.log("Successfully connected to the database");
-        // } catch (error) {
-        //     console.log("Failed to connect to the database, exiting..", error);
-        // }
-        console.log("Port running on", PORT);
-    })
+// connection().then(() => {
+//     app.listen(PORT, () => {
+//         // try {
+//         //     await connection
+//         //     console.log("Successfully connected to the database");
+//         // } catch (error) {
+//         //     console.log("Failed to connect to the database, exiting..", error);
+//         // }
+//         console.log("Port running on", PORT);
+//     })
+// })
+
+app.listen(PORT, async()=>{
+    try {
+        await connection;
+        console.log("Database connected successfully");
+    } catch (error) {
+        console.log("Database not connected");
+    }
+    console.log(`Server running on ${PORT}`);
 })
