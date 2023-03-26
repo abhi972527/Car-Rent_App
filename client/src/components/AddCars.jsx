@@ -2,8 +2,11 @@ import React, { useState } from 'react';
 
 import CarRentConfirmation from './CarRentConfirmation.jsx';
 import img from '../assets/index.js';
+import { useAddCarMutation } from '../services/carRent.js';
 
 const AddCars = () => {
+    const [addCar, { data: carData, error: addCarError, isLoading },] = useAddCarMutation();
+    // carData ? console.log("🚀 ~ file: AddCars.jsx:9 ~ AddCars ~ carData:", carData) : console.log("🚀 ~ file: AddCars.jsx:9 ~ AddCars ~ addCarError:", addCarError)
     const [showConfirmation, setShowConfirmation] = useState(false)
     const [input, setInput] = useState({
         title: '',
@@ -18,6 +21,25 @@ const AddCars = () => {
         availableTo: '',
     })
 
+    const handleClickApi = async () => {
+        console.log("button clicked");
+        try {
+            const response = await addCar({
+                // "name": "Mustang",
+                // "brand": "Ford",
+                // "rent": 10000,
+                // "location": "Pakistan",
+                // "userId": "64132c30a362a5e0d499b3fa"
+            });
+            console.log("🚀 ~ file: AddCars.jsx:28 ~ handleClickApi ~ response:", response)
+
+        } catch (error) {
+            console.error('Error:', err);
+        }
+        // console.log("🚀 ~ file: AddCars.jsx:9 ~ AddCars ~ data:", data)
+
+    }
+
     const handleInputChange = (event) => {
         const { name, value } = event.target;
         setInput((prevFormData) => ({
@@ -29,6 +51,14 @@ const AddCars = () => {
 
     const print = () => {
         console.log("🚀 ~ file: AddCars.jsx:20 ~ AddCars ~ input:", input)
+    }
+
+    if (isLoading) {
+        return <div>Loading...</div>;
+    }
+
+    if (addCarError) {
+        return <div>An error occurred: {error}</div>;
     }
 
     return (
@@ -124,6 +154,9 @@ const AddCars = () => {
                 </div>
                 <button onClick={() => setShowConfirmation(true)} className='bg-[#3563E9] text-white text[16px] font-bold rounded-lg h-14 w-[140px] mt-10 ml-auto'>
                     Rent Now
+                </button>
+                <button onClick={handleClickApi} className='bg-[#3563E9] text-white text[16px] font-bold rounded-lg h-14 w-[140px] mt-10 ml-auto'>
+                    Hit api
                 </button>
             </div>
             {showConfirmation &&
