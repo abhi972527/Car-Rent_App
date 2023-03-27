@@ -66,7 +66,7 @@ export const login = async (req, res) => {
         return res.send({
             status: 200,
             data: isExistEmail,
-            message: "Successfully signed up",
+            message: "Successfully logged in",
         })
     } catch (error) {
 

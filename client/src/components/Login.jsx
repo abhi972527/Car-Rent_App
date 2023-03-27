@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { useLoginMutation } from '../services/carRent';
 
-const UserSignupLogin = () => {
+import { useLoginMutation } from '../services/carRent';
+import { setUser } from '../app/features/userSlice';
+
+const Login = () => {
+  const dispatch = useDispatch();
   const [logIn, { data: userData, error: userDataError, isLoading },] = useLoginMutation();
   const [input, setInput] = useState({
     email: '',
@@ -26,6 +29,7 @@ const UserSignupLogin = () => {
         "password": input.password
       });
       console.log("🚀 ~ file: Register.jsx:30 ~ register ~ response:", response)
+      dispatch(setUser(response.data.data));
     } catch (error) {
       console.log("🚀 ~ file: Register.jsx:26 ~ register ~ error:", error)
     }
@@ -107,4 +111,4 @@ const UserSignupLogin = () => {
   )
 }
 
-export default UserSignupLogin;
+export default Login;
