@@ -37,6 +37,7 @@ const AddCars = () => {
             //     formData.append(`image${index}`, image);
             // });
 
+            console.log("🚀 ~ file: AddCars.jsx:30 ~ handleClickApi ~ formData:", formData)
             const response = await addCar(formData);
             // const response = await addCar({
             //     "name": "Mustang",

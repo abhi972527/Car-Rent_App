@@ -7,6 +7,8 @@ import SearchCars from './components/SearchCars';
 import AddCars from './components/AddCars';
 import MyProfile from './components/MyProfile';
 import Footer from './components/Footer';
+import UserSignupLogin from './components/UserSignupLogin';
+import Register from './components/Register';
 import './css/App.css'
 
 function App() {
@@ -19,6 +21,8 @@ function App() {
         <Route path="/searchCar" element={<SearchCars />} />
         <Route path="/addCar" element={<AddCars />} />
         <Route path="/profile" element={<MyProfile />} />
+        <Route path="/login" element={<UserSignupLogin />} />
+        <Route path="/signUp" element={<Register />} />
       </Routes>
       <Footer />
     </div>

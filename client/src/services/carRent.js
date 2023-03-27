@@ -6,6 +6,20 @@ export const carRentApi = createApi({
     reducerPath: 'carRentApi',
     baseQuery: fetchBaseQuery({ baseUrl: URL }),
     endpoints: (builder) => ({
+        signUp: builder.mutation({
+            query: (body) => ({
+                url: 'user/signUp',
+                method: 'POST',
+                body,
+            })
+        }),
+        login: builder.mutation({
+            query: (body) => ({
+                url: 'user/login',
+                method: 'POST',
+                body,
+            })
+        }),
         // get car by type
         getCar: builder.query({
             query: (filter) => `vehicle/`,
@@ -24,6 +38,8 @@ export const carRentApi = createApi({
 });
 
 export const {
+    useSignUpMutation,
+    useLoginMutation,
     useGetCarQuery,
     useAddCarMutation,
 } = carRentApi;
