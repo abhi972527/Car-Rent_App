@@ -1,5 +1,6 @@
 import React from 'react';
 import { useLocation, Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 
 const links = [
@@ -18,6 +19,8 @@ const links = [
 ];
 
 const Navbar = () => {
+    const user = useSelector((state) => state.user.user);
+    console.log("🚀 ~ file: Navbar.jsx:23 ~ Navbar ~ user:", user)
     const { pathname } = useLocation();
 
     return (
