@@ -1,6 +1,7 @@
 import express from "express";
 import * as dotenv from "dotenv";
 import cors from "cors";
+// import multer from "multer";
 
 import connection from "./config/db.js";
 dotenv.config();
@@ -8,9 +9,13 @@ dotenv.config();
 import userRouter from "./routes/user.js";
 import vehicleRouter from "./routes/vehicle.js";
 
+// const storage = multer.memoryStorage();
+// export const upload = multer({ storage: storage });
+
+
 const app = express();
 app.use(cors());
-app.use(express.json({ limit: '5mb' }));
+app.use(express.json({ limit: '50mb' }));
 
 app.get("/", (req, res) => {
     res.send({ message: "Welcome to backend" });

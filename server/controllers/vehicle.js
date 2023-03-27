@@ -1,8 +1,11 @@
 import * as vehicleService from "../services/vehicleCrud.js";
+import * as imageService from "../services/imageKit.js";
 
 export const addVehicle = async (req, res) => {
     console.log("🚀 ~ file: vehicle.js:4 ~ addVehicle ~ req:", req.body);
+    console.log("🚀 ~ file: vehicle.js:4 ~ addVehicle ~ req:", req.file);
     try {
+
         // let image = req.file;
         let { name, brand, rent, capacity, carType, location, fuelCapacity, transmission, wishlist, availability, userId } = req.body;
         if (!name || !brand || !rent || !location || !userId) {
@@ -12,7 +15,7 @@ export const addVehicle = async (req, res) => {
                 message: "Required name, brand, rent, location, image",
             })
         }
-        console.log("console after if condition");
+        // console.log("console after if condition");
         let obj = {
             name : name || null,
             brand : brand || null,
@@ -27,9 +30,17 @@ export const addVehicle = async (req, res) => {
             userId: userId,
             // image: image || null,
         }
-        console.log("🚀 ~ file: vehicle.js:15 ~ addVehicle ~ obj:", obj)
+
+        let buffer = req.file.buffer;
+        let fileName = req.file.originalname;
+        let folder = "car";
+
+        const url = await imageService.uploadImage(buffer, fileName, folder);
+        console.log("🚀 ~ file: vehicle.js:39 ~ addVehicle ~ url:", url)
+
+        // console.log("🚀 ~ file: vehicle.js:15 ~ addVehicle ~ obj:", obj)
         let data = await vehicleService.saveVehicle(obj);
-        console.log("🚀 ~ file: vehicle.js:28 ~ addVehicle ~ data:", data)
+        // console.log("🚀 ~ file: vehicle.js:28 ~ addVehicle ~ data:", data)
         if (!data) {
             return res.send({
                 status: 500,

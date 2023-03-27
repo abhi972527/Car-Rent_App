@@ -1,9 +1,20 @@
 // var express = require('express');
 import express from "express";
-var router = express.Router();
 import * as vehicleController from "../controllers/vehicle.js";
+// import upload from "../index";
+import multer from "multer";
 
-router.post("/", vehicleController.addVehicle);
+var router = express.Router();
+
+const storage = multer.memoryStorage();
+export const upload = multer({
+    storage: storage,
+    // limits: {
+    //     files: 3, // limit to 3 files
+    // },
+});
+
+router.post("/", upload.single('image'), vehicleController.addVehicle);
 router.get("/", vehicleController.getVehicle);
 router.get("/:id", vehicleController.getVehicleById);
 

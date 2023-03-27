@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+// import FormData from 'form-data';
 
 import CarRentConfirmation from './CarRentConfirmation.jsx';
 import img from '../assets/index.js';
@@ -19,35 +20,72 @@ const AddCars = () => {
         dropOff: '',
         availableFrom: '',
         availableTo: '',
+        image: '',
     })
 
     const handleClickApi = async () => {
         console.log("button clicked");
         try {
-            const response = await addCar({
-                // "name": "Mustang",
-                // "brand": "Ford",
-                // "rent": 10000,
-                // "location": "Pakistan",
-                // "userId": "64132c30a362a5e0d499b3fa"
-            });
+            const formData = new FormData();
+            formData.append('name', 'Mustang');
+            formData.append('brand', 'Ford');
+            formData.append('rent', '10000');
+            formData.append('location', 'Pakistan');
+            formData.append('userId', '64132c30a362a5e0d499b3fa');
+            formData.append('image', input.image);
+            // input.image.forEach((image, index) => {
+            //     formData.append(`image${index}`, image);
+            // });
+
+            const response = await addCar(formData);
+            // const response = await addCar({
+            //     "name": "Mustang",
+            //     "brand": "Ford",
+            //     "rent": 10000,
+            //     "location": "Pakistan",
+            //     "userId": "64132c30a362a5e0d499b3fa",
+            //     "image": input.image,
+            // });
             console.log("🚀 ~ file: AddCars.jsx:28 ~ handleClickApi ~ response:", response)
 
         } catch (error) {
-            console.error('Error:', err);
+            console.error('Error:', error);
         }
         // console.log("🚀 ~ file: AddCars.jsx:9 ~ AddCars ~ data:", data)
 
     }
 
     const handleInputChange = (event) => {
-        const { name, value } = event.target;
+        console.log("🚀 ~ file: AddCars.jsx:48 ~ handleInputChange ~ event.target:", event.target.files)
+        const { name, value, files } = event.target;
         setInput((prevFormData) => ({
             ...prevFormData,
-            [name]: value,
+            [name]: files ? files[0] : value,
+            // [name]: value,
         }));
-        console.log("🚀 ~ file: AddCars.jsx:20 ~ AddCars ~ input:", input)
     };
+
+    // const handleInputChange = (event) => {
+    //     const { name, value, files } = event.target;
+    //     if (name === "image") {
+    //         setInput((prevFormData) => ({
+    //             ...prevFormData,
+    //             [name]: [...prevFormData[name], ...files],
+    //         }));
+    //     } else {
+    //         setInput((prevFormData) => ({
+    //             ...prevFormData,
+    //             [name]: value,
+    //         }));
+    //     }
+    // };
+
+    // const handleImageChange = (event) => {
+    //     setInput((prevFormData) => ({
+    //         ...prevFormData,
+    //         // image: event.target.files[0],
+    //     }));
+    // };
 
     const print = () => {
         console.log("🚀 ~ file: AddCars.jsx:20 ~ AddCars ~ input:", input)
@@ -144,6 +182,7 @@ const AddCars = () => {
                     Upload Images
                 </div>
                 <div className='border border-dashed cursor-pointer border-[#90A3BF] rounded-[6px] h-[184px] w-full flex flex-col justify-center items-center '>
+                    <input type="file" name="image" onChange={handleInputChange} accept="image/*" multiple placeholder='upload file' />
                     <img src={img.upload} alt="upload" className='h-6 w-6 mb-3' />
                     <div className='text-[14px] text-[#556987] font-medium '>
                         Drag and drop an image, or <span className='text-[#3563E9] font-bold'>Browse</span>
@@ -152,7 +191,7 @@ const AddCars = () => {
                         High resolution images (png, jpg, gif)
                     </div>
                 </div>
-                <button onClick={() => setShowConfirmation(true)} className='bg-[#3563E9] text-white text[16px] font-bold rounded-lg h-14 w-[140px] mt-10 ml-auto'>
+                <button onClick={print} className='bg-[#3563E9] text-white text[16px] font-bold rounded-lg h-14 w-[140px] mt-10 ml-auto'>
                     Rent Now
                 </button>
                 <button onClick={handleClickApi} className='bg-[#3563E9] text-white text[16px] font-bold rounded-lg h-14 w-[140px] mt-10 ml-auto'>

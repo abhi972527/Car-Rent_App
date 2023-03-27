@@ -29,7 +29,7 @@ const Home = () => {
     console.log("🚀 ~ file: Home.jsx:9 ~ Home ~ data:", file)
     return (
         <div className='border p-16 pt-8 bg-[#F6F7F9] flex flex-wrap gap-8 justify-around '>
-            <button onClick={hitApi} >Api button</button>
+
             {data.map((item, i) => (
                 <CarCard
                     key={i}
