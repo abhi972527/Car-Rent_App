@@ -35,9 +35,11 @@ const Navbar = () => {
                         </Link>
                     ))
                 }
-                <button className='h-[44px] w-[110px] rounded-[4px] bg-[#3563E9] text-[#FFFFFF] text-[16px] font-semibold'>
-                    Login
-                </button>
+                <Link to="/login">
+                    <button className='h-[44px] w-[110px] rounded-[4px] bg-[#3563E9] text-[#FFFFFF] text-[16px] font-semibold'>
+                        Login
+                    </button>
+                </Link>
             </div>
         </div>
     )
