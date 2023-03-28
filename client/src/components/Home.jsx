@@ -7,14 +7,14 @@ import { useGetCarQuery } from '../services/carRent';
 
 
 const Home = () => {
-    // const { data: file, isLoading, error } = useGetCarQuery();
-    // console.log("🚀 ~ file: Home.jsx:9 ~ Home ~ data:", file)
-    // if (isLoading) {
-    //     return <div>Loading...</div>;
-    // }
-    // if (error) {
-    //     return <div>An error occurred: {error}</div>;
-    // }
+    const { data: file, isLoading, error } = useGetCarQuery();
+    console.log("🚀 ~ file: Home.jsx:9 ~ Home ~ data:", file)
+    if (isLoading) {
+        return <div>Loading...</div>;
+    }
+    if (error) {
+        return <div>An error occurred</div>;
+    }
 
     // if (!file) {
     //     return null; // or a loading indicator, depending on your preference
