@@ -6,6 +6,7 @@ import wishListHeart from './wishListHeart.svg';
 import car from './car.jpg';
 import dataSafety from './dataSafety.svg';
 import upload from './upload.svg';
+import searchIcon from './searchIcon.svg';
 
 export default {
     carGearType,
@@ -16,4 +17,5 @@ export default {
     car,
     dataSafety,
     upload,
+    searchIcon,
 };
