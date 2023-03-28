@@ -1,6 +1,8 @@
 // let userService = require("../services/userCrud");
 // import userService from "../services/userCrud.js";
 import * as userService from "../services/userCrud.js";
+import jwt from "jsonwebtoken";
+import { secretKey } from "../config/tokenKeys.js";
 
 export const register = async (req, res) => {
     try {
@@ -63,13 +65,17 @@ export const login = async (req, res) => {
             message: "Password is wrong",
         })
         console.log("🚀 ~ file: user.js:46 ~ login ~ isExistEmail:", isExistEmail)
+        const token = jwt.sign({ email }, secretKey, { expiresIn: '1m' });
+        // res.cookie('token', token, { httpOnly: false, domain: 'localhost' });
+        console.log("🚀 ~ file: user.js:69 ~ login ~ token:", token)
         return res.send({
             status: 200,
             data: isExistEmail,
             message: "Successfully logged in",
+            token: token,
         })
     } catch (error) {
-
+        return error
     }
 }
 

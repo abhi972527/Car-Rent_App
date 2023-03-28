@@ -2,7 +2,7 @@ import * as vehicleService from "../services/vehicleCrud.js";
 import * as imageService from "../services/imageKit.js";
 
 export const addVehicle = async (req, res) => {
-    console.log("🚀 ~ file: vehicle.js:4 ~ addVehicle ~ req:", req.body);
+    console.log("🚀 ~ file: vehicle.js:4 ~ addVehicle ~ req:", req);
     console.log("🚀 ~ file: vehicle.js:4 ~ addVehicle ~ req:", req.file);
     try {
 

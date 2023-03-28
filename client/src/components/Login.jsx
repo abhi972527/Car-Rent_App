@@ -29,7 +29,7 @@ const Login = () => {
         "password": input.password
       });
       console.log("🚀 ~ file: Register.jsx:30 ~ register ~ response:", response)
-      dispatch(setUser(response.data.data));
+      dispatch(setUser(response.data));
     } catch (error) {
       console.log("🚀 ~ file: Register.jsx:26 ~ register ~ error:", error)
     }

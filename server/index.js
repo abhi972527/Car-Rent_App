@@ -1,6 +1,7 @@
 import express from "express";
 import * as dotenv from "dotenv";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 // import multer from "multer";
 
 import connection from "./config/db.js";
@@ -16,6 +17,7 @@ import vehicleRouter from "./routes/vehicle.js";
 const app = express();
 app.use(cors());
 app.use(express.json({ limit: '50mb' }));
+app.use(cookieParser());
 
 app.get("/", (req, res) => {
     res.send({ message: "Welcome to backend" });
