@@ -3,6 +3,7 @@ import express from "express";
 import * as vehicleController from "../controllers/vehicle.js";
 // import upload from "../index";
 import multer from "multer";
+import { authenticateUser } from "../middleware/auth.js";
 
 var router = express.Router();
 
@@ -14,7 +15,7 @@ export const upload = multer({
     // },
 });
 
-router.post("/", upload.single('image'), vehicleController.addVehicle);
+router.post("/", authenticateUser, upload.single('image'), vehicleController.addVehicle);
 router.get("/", vehicleController.getVehicle);
 router.get("/:id", vehicleController.getVehicleById);
 

@@ -1,11 +1,17 @@
 import React, { useState } from 'react';
 // import FormData from 'form-data';
+import { useNavigate, Link } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { clearUser } from '../app/features/userSlice';
 
 import CarRentConfirmation from './CarRentConfirmation.jsx';
 import img from '../assets/index.js';
 import { useAddCarMutation } from '../services/carRent.js';
 
 const AddCars = () => {
+    const user = useSelector((state) => state.user.user)
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
     const [addCar, { data: carData, error: addCarError, isLoading },] = useAddCarMutation();
     // carData ? console.log("🚀 ~ file: AddCars.jsx:9 ~ AddCars ~ carData:", carData) : console.log("🚀 ~ file: AddCars.jsx:9 ~ AddCars ~ addCarError:", addCarError)
     const [showConfirmation, setShowConfirmation] = useState(false)
@@ -25,7 +31,14 @@ const AddCars = () => {
 
     const handleClickApi = async () => {
         console.log("button clicked");
+        console.log("🚀 ~ file: AddCars.jsx:35 ~ handleClickApi ~ user:", user)
         try {
+            if (!user) {
+                navigate('/login');
+                return
+            }
+            let token = user.token
+            console.log("🚀 ~ file: AddCars.jsx:40 ~ handleClickApi ~ token:", token)
             const formData = new FormData();
             formData.append('name', 'Mustang');
             formData.append('brand', 'Ford');
@@ -37,8 +50,11 @@ const AddCars = () => {
             //     formData.append(`image${index}`, image);
             // });
 
-            console.log("🚀 ~ file: AddCars.jsx:30 ~ handleClickApi ~ formData:", formData)
-            const response = await addCar(formData);
+            console.log("🚀 ~ file: AddCars.jsx:43 ~ handleClickApi ~ formData:", formData)
+            // console.log("🚀 ~ file: AddCars.jsx:30 ~ handleClickApi ~ formData:", formData)
+            const response = await addCar({ formData, token });
+
+            // response?.error?.data?.message == "Unauthorized" ? navigate('/login') : "";
             // const response = await addCar({
             //     "name": "Mustang",
             //     "brand": "Ford",
@@ -97,7 +113,11 @@ const AddCars = () => {
     }
 
     if (addCarError) {
-        return <div>An error occurred: {error}</div>;
+        dispatch(clearUser())
+        return (<div>
+            An error occurred <br />
+            <Link to="/login">login again</Link>
+        </div>)
     }
 
     return (
