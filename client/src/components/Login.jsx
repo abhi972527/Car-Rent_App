@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import { useNavigate, Link } from 'react-router-dom';
 
 import { useLoginMutation } from '../services/carRent';
 import { setUser } from '../app/features/userSlice';
 
 const Login = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [logIn, { data: userData, error: userDataError, isLoading },] = useLoginMutation();
   const [input, setInput] = useState({
     email: '',
@@ -30,6 +31,7 @@ const Login = () => {
       });
       console.log("🚀 ~ file: Register.jsx:30 ~ register ~ response:", response)
       dispatch(setUser(response.data));
+      navigate("/");
     } catch (error) {
       console.log("🚀 ~ file: Register.jsx:26 ~ register ~ error:", error)
     }
