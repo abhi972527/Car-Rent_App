@@ -19,13 +19,8 @@ const links = [
 ];
 
 const Navbar = () => {
-    // const [ifUser, setIfUser] = useState()
     const user = useSelector((state) => state.user.user)
     const dispatch = useDispatch();
-    // {
-    //     setIfUser(state.user.user)
-    //     return state.user.user
-    // });
     console.log("🚀 ~ file: Navbar.jsx:23 ~ Navbar ~ user:", user)
     const { pathname } = useLocation();
 
@@ -48,17 +43,19 @@ const Navbar = () => {
                         </Link>
                     ))
                 }
-                {/* <Link to="/login">
-                    <button className='h-[44px] w-[110px] rounded-[4px] bg-[#3563E9] text-[#FFFFFF] text-[16px] font-semibold'>
-                        Login
-                    </button>
-                </Link> */}
                 {user ?
-                    // (<Link to="/">
-                    (<button onClick={logout} className='h-[44px] w-[110px] rounded-[4px] bg-[#3563E9] text-[#FFFFFF] text-[16px] font-semibold'>
-                        Logout
-                    </button>)
-                    // </Link>)
+                    (
+                        <div className='flex gap-[30px]'>
+                            <Link to="/profile">
+                                <div className='h-[44px] w-[44px] rounded-full border flex items-center justify-center text-[25px] font-extrabold cursor-pointer'>
+                                    {user.data.name[0]}
+                                </div>
+                            </Link>
+                            <button onClick={logout} className='h-[44px] w-[110px] rounded-[10px] bg-[#ED3F3F] text-[#FFFFFF] text-[16px] font-semibold'>
+                                Logout
+                            </button>
+                        </div>
+                    )
                     :
                     (<Link to="/login">
                         <button className='h-[44px] w-[110px] rounded-[4px] bg-[#3563E9] text-[#FFFFFF] text-[16px] font-semibold'>
