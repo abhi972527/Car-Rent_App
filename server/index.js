@@ -2,6 +2,7 @@ import express from "express";
 import * as dotenv from "dotenv";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import bodyParser from "body-parser";
 // import multer from "multer";
 
 import connection from "./config/db.js";
@@ -15,6 +16,8 @@ import vehicleRouter from "./routes/vehicle.js";
 
 
 const app = express();
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 app.use(cors());
 app.use(express.json({ limit: '50mb' }));
 app.use(cookieParser());

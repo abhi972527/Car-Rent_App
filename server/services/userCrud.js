@@ -13,8 +13,10 @@ export const findEmail = async (element) => {
 }
 
 export const saveUser = async (obj) => {
+    console.log("🚀 ~ file: userCrud.js:16 ~ saveUser ~ obj:", obj)
     try {
-        let data = await User.create(obj);
+        let data = await userModel.User.create(obj);
+        console.log("🚀 ~ file: userCrud.js:19 ~ saveUser ~ data:", data)
         return data;
     } catch (error) {
         console.log("🚀 ~ file: userCrud.js:18 ~ saveUser ~ error:", error)
@@ -32,7 +34,7 @@ export const saveUser = async (obj) => {
 
 export const updateProfile = async (id, obj) => {
     try {
-        let data = await User.findByIdAndUpdate({ _id: id }, { $set: obj }, { new: true })
+        let data = await userModel.User.findByIdAndUpdate({ _id: id }, { $set: obj }, { new: true })
         return data;
     } catch (error) {
         return false

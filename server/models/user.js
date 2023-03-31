@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 const user = new mongoose.Schema({
     name: {
         type: String,
-        minLength: 6,
+        minLength: 4,
         maxlength: 32,
         trim: true,
         required: [true, "can't be blank"],
@@ -17,15 +17,20 @@ const user = new mongoose.Schema({
         unique: true,
         match: [/\S+@\S+\.\S+/, 'is invalid']
     },
-    phone: {
+    password: {
         type: String,
-        unique: true,
-        required: [true, "can't be blank"]
+        require: true,
+        minLength: 4,
+        maxlength: 12,
     },
-    // image: {
-    //     type: String,
-    //     default: "",
-    // }
+    profilePic: {
+        type: String,
+        require: false,
+    },
+    coverPic: {
+        type: String,
+        require: false,
+    }
 },
     { timestamps: true },
 );

@@ -1,21 +1,23 @@
 import React from 'react';
 
 import CarCard from './CarCard';
-import { data } from '../constants/index';
+// import { data } from '../constants/index';
 import { useGetCarQuery } from '../services/carRent';
 // import { useAddCarMutation } from '../services/carRent.js';
 
-
 const Home = () => {
-    const { data: file, isLoading, error } = useGetCarQuery();
+    // let data = []
+    const { data: file, isLoading, error } = useGetCarQuery({ staleTime: 0 });
     console.log("🚀 ~ file: Home.jsx:9 ~ Home ~ data:", file)
+    // data = file;
     if (isLoading) {
         return <div>Loading...</div>;
     }
     if (error) {
         return <div>An error occurred</div>;
     }
-
+    
+    // console.log("🚀 ~ file: Home.jsx:9 ~ data:", data)
     // if (!file) {
     //     return null; // or a loading indicator, depending on your preference
     // }
@@ -30,15 +32,16 @@ const Home = () => {
     return (
         <div className='border p-16 pt-8 bg-[#F6F7F9] flex flex-wrap gap-8 justify-around '>
 
-            {data.map((item, i) => (
+            {file.data.map((item, i) => (
                 <CarCard
                     key={i}
-                    title={item.title}
+                    title={item.name}
                     carType={item.carType}
-                    rentPrice={item.rentPrice}
-                    peopleCapacity={item.peopleCapacity}
-                    fuelTankCapacity={item.fuelTankCapacity}
-                    carGearType={item.carGearType}
+                    rentPrice={item.rent}
+                    peopleCapacity={item.capacity}
+                    fuelTankCapacity={item.fuelCapacity}
+                    carGearType={item.engineType}
+                    image={item.image}
                 />
             ))}
         </div>

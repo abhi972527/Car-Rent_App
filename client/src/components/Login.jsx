@@ -30,8 +30,10 @@ const Login = () => {
         "password": input.password
       });
       console.log("🚀 ~ file: Register.jsx:30 ~ register ~ response:", response)
-      dispatch(setUser(response.data));
-      navigate("/");
+      if (response.data.status == 200) {
+        dispatch(setUser(response.data));
+        navigate("/");
+      }
     } catch (error) {
       console.log("🚀 ~ file: Register.jsx:26 ~ register ~ error:", error)
     }
@@ -42,7 +44,7 @@ const Login = () => {
   }
 
   if (userDataError) {
-    return <div>An error occurred: {error}</div>;
+    return <div>An error occurred</div>;
   }
 
   return (

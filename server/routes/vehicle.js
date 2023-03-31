@@ -17,6 +17,7 @@ export const upload = multer({
 
 router.post("/", authenticateUser, upload.single('image'), vehicleController.addVehicle);
 router.get("/", vehicleController.getVehicle);
+router.post("/filter", vehicleController.getVehicleByFilter);
 router.get("/:id", vehicleController.getVehicleById);
 
 

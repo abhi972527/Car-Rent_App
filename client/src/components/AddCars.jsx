@@ -10,24 +10,32 @@ import { useAddCarMutation } from '../services/carRent.js';
 
 const AddCars = () => {
     const user = useSelector((state) => state.user.user)
+    console.log("🚀 ~ file: AddCars.jsx:13 ~ AddCars ~ user:", user)
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [addCar, { data: carData, error: addCarError, isLoading },] = useAddCarMutation();
-    // carData ? console.log("🚀 ~ file: AddCars.jsx:9 ~ AddCars ~ carData:", carData) : console.log("🚀 ~ file: AddCars.jsx:9 ~ AddCars ~ addCarError:", addCarError)
-    const [showConfirmation, setShowConfirmation] = useState(false)
+    // const [showConfirmation, setShowConfirmation] = useState(false)
     const [input, setInput] = useState({
         title: '',
         brand: '',
         rent: '',
         capacity: '',
+        fuel: '',
+        engineType: '',
         carType: '',
         location: '',
-        pickUp: '',
-        dropOff: '',
-        availableFrom: '',
-        availableTo: '',
         image: '',
     })
+
+
+    const peopleCapacity = ['2 Person', '4 Person', '6 Person', '8 Person'];
+    const engineType = ['Manual', 'Automatic'];
+    const carType = ["Sport", "SUV", "MPV", "Sedan", "Coupe", "Hatchback"]
+    // const [selectedOption, setSelectedOption] = useState(options[0]);
+  
+    // const handleOptionChange = (event) => {
+    //   setSelectedOption(event.target.value);
+    // };
 
     const handleClickApi = async () => {
         console.log("button clicked");
@@ -40,11 +48,15 @@ const AddCars = () => {
             let token = user.token
             console.log("🚀 ~ file: AddCars.jsx:40 ~ handleClickApi ~ token:", token)
             const formData = new FormData();
-            formData.append('name', 'Mustang');
-            formData.append('brand', 'Ford');
-            formData.append('rent', '10000');
-            formData.append('location', 'Pakistan');
-            formData.append('userId', '64132c30a362a5e0d499b3fa');
+            formData.append('name', input.title);
+            formData.append('brand', input.brand);
+            formData.append('rent', input.rent);
+            formData.append('capacity', input.capacity[0]);
+            formData.append('fuelCapacity', input.fuel);
+            formData.append('engineType', input.engineType);
+            formData.append('carType', input.carType);
+            formData.append('location', input.location);
+            formData.append('userId', user.data._id);
             formData.append('image', input.image);
             // input.image.forEach((image, index) => {
             //     formData.append(`image${index}`, image);
@@ -53,27 +65,30 @@ const AddCars = () => {
             console.log("🚀 ~ file: AddCars.jsx:43 ~ handleClickApi ~ formData:", formData)
             // console.log("🚀 ~ file: AddCars.jsx:30 ~ handleClickApi ~ formData:", formData)
             const response = await addCar({ formData, token });
-
-            // response?.error?.data?.message == "Unauthorized" ? navigate('/login') : "";
-            // const response = await addCar({
-            //     "name": "Mustang",
-            //     "brand": "Ford",
-            //     "rent": 10000,
-            //     "location": "Pakistan",
-            //     "userId": "64132c30a362a5e0d499b3fa",
-            //     "image": input.image,
-            // });
             console.log("🚀 ~ file: AddCars.jsx:28 ~ handleClickApi ~ response:", response)
-
+            if(response?.data?.status === 200) {
+                setInput({
+                    title: '',
+                    brand: '',
+                    rent: '',
+                    capacity: '',
+                    fuel: '',
+                    engineType: '',
+                    carType: '',
+                    location: '',
+                    image: '',
+                })
+            }            
         } catch (error) {
             console.error('Error:', error);
         }
         // console.log("🚀 ~ file: AddCars.jsx:9 ~ AddCars ~ data:", data)
-
+        
     }
-
+    
     const handleInputChange = (event) => {
-        console.log("🚀 ~ file: AddCars.jsx:48 ~ handleInputChange ~ event.target:", event.target.files)
+        console.log("🚀 ~ file: AddCars.jsx:48 ~ handleInputChange ~ event.target:", event.target.name)
+        console.log("🚀 ~ file: AddCars.jsx:48 ~ handleInputChange ~ event.target:", event.target.value)
         const { name, value, files } = event.target;
         setInput((prevFormData) => ({
             ...prevFormData,
@@ -82,32 +97,11 @@ const AddCars = () => {
         }));
     };
 
-    // const handleInputChange = (event) => {
-    //     const { name, value, files } = event.target;
-    //     if (name === "image") {
-    //         setInput((prevFormData) => ({
-    //             ...prevFormData,
-    //             [name]: [...prevFormData[name], ...files],
-    //         }));
-    //     } else {
-    //         setInput((prevFormData) => ({
-    //             ...prevFormData,
-    //             [name]: value,
-    //         }));
-    //     }
-    // };
-
-    // const handleImageChange = (event) => {
-    //     setInput((prevFormData) => ({
-    //         ...prevFormData,
-    //         // image: event.target.files[0],
-    //     }));
-    // };
-
+    
     const print = () => {
         console.log("🚀 ~ file: AddCars.jsx:20 ~ AddCars ~ input:", input)
     }
-
+    
     if (isLoading) {
         return <div>Loading...</div>;
     }
@@ -119,7 +113,7 @@ const AddCars = () => {
             <Link to="/login">login again</Link>
         </div>)
     }
-
+    
     return (
         <div className='flex py-[50px]'>
             <div className='bg-white w-[852px] px-6 py-[30px] rounded-[10px] mx-auto flex flex-col'>
@@ -149,19 +143,43 @@ const AddCars = () => {
                         <div className='text-[16px] text-[#1A202C] font-semibold'>
                             Rent Price
                         </div>
-                        <input type="text" name="rent" value={input.rent} onChange={handleInputChange} className='bg-[#F6F7F9] rounded-[10px] h-14 w-96 pl-6 text-[14px] text-[#90A3BF] font-normal outline-none' placeholder='Your title' />
+                        <input type="number" name="rent" value={input.rent} onChange={handleInputChange} className='bg-[#F6F7F9] rounded-[10px] h-14 w-96 pl-6 text-[14px] text-[#90A3BF] font-normal outline-none' placeholder='Your title' />
                     </div>
                     <div className='flex flex-col gap-4'>
                         <div className='text-[16px] text-[#1A202C] font-semibold'>
                             Capacity
                         </div>
-                        <input type="text" name="capacity" value={input.capacity} onChange={handleInputChange} className='bg-[#F6F7F9] rounded-[10px] h-14 w-96 pl-6 text-[14px] text-[#90A3BF] font-normal outline-none' placeholder='Your title' />
+                        <select name='capacity' value={input.capacity} onChange={handleInputChange} className='bg-[#F6F7F9] rounded-[10px] h-14 w-96 pl-6 text-[14px] text-[#90A3BF] font-normal outline-none'>
+                            {peopleCapacity.map((option) => (
+                            <option key={option} value={option}>{option}</option>
+                            ))}
+                        </select>
+                    </div>
+                    <div className='flex flex-col gap-4'>
+                        <div className='text-[16px] text-[#1A202C] font-semibold'>
+                            Fuel capacity
+                        </div>
+                        <input type="number" name="fuel" value={input.fuel} onChange={handleInputChange} className='bg-[#F6F7F9] rounded-[10px] h-14 w-96 pl-6 text-[14px] text-[#90A3BF] font-normal outline-none' placeholder='Your title' />
+                    </div>
+                    <div className='flex flex-col gap-4'>
+                        <div className='text-[16px] text-[#1A202C] font-semibold'>
+                            Engine Type
+                        </div>
+                        <select name='engineType' value={input.engineType} onChange={handleInputChange} className='bg-[#F6F7F9] rounded-[10px] h-14 w-96 pl-6 text-[14px] text-[#90A3BF] font-normal outline-none'>
+                            {engineType.map((option) => (
+                            <option key={option} value={option}>{option}</option>
+                            ))}
+                        </select>
                     </div>
                     <div className='flex flex-col gap-4'>
                         <div className='text-[16px] text-[#1A202C] font-semibold'>
                             Car Type
                         </div>
-                        <input type="text" name="carType" value={input.carType} onChange={handleInputChange} className='bg-[#F6F7F9] rounded-[10px] h-14 w-96 pl-6 text-[14px] text-[#90A3BF] font-normal outline-none' placeholder='Your title' />
+                        <select name='carType' value={input.carType} onChange={handleInputChange} className='bg-[#F6F7F9] rounded-[10px] h-14 w-96 pl-6 text-[14px] text-[#90A3BF] font-normal outline-none'>
+                            {carType.map((option) => (
+                            <option key={option} value={option}>{option}</option>
+                            ))}
+                        </select>
                     </div>
                     <div className='flex flex-col gap-4'>
                         <div className='text-[16px] text-[#1A202C] font-semibold'>
@@ -169,35 +187,9 @@ const AddCars = () => {
                         </div>
                         <input type="text" name="location" value={input.location} onChange={handleInputChange} className='bg-[#F6F7F9] rounded-[10px] h-14 w-96 pl-6 text-[14px] text-[#90A3BF] font-normal outline-none' placeholder='Your title' />
                     </div>
-                </div>
-                <div className='text-[18px] text-[#3563E9] font-extrabold mt-10 mb-9'>
-                    Pickup  Info
-                </div>
-                <div className='flex flex-wrap justify-between gap-6'>
-                    <div className='flex flex-col gap-4'>
-                        <div className='text-[16px] text-[#1A202C] font-semibold'>
-                            Pickup Location
-                        </div>
-                        <input type="text" name="pickUp" value={input.pickUp} onChange={handleInputChange} className='bg-[#F6F7F9] rounded-[10px] h-14 w-96 pl-6 text-[14px] text-[#90A3BF] font-normal outline-none' placeholder='Your title' />
-                    </div>
-                    <div className='flex flex-col gap-4'>
-                        <div className='text-[16px] text-[#1A202C] font-semibold'>
-                            Drop Off Location
-                        </div>
-                        <input type="text" name="dropOff" value={input.dropOff} onChange={handleInputChange} className='bg-[#F6F7F9] rounded-[10px] h-14 w-96 pl-6 text-[14px] text-[#90A3BF] font-normal outline-none' placeholder='Your title' />
-                    </div>
-                    <div className='flex flex-col gap-4'>
-                        <div className='text-[16px] text-[#1A202C] font-semibold'>
-                            Availability From
-                        </div>
-                        <input type="text" name="availableFrom" value={input.availableFrom} onChange={handleInputChange} className='bg-[#F6F7F9] rounded-[10px] h-14 w-96 pl-6 text-[14px] text-[#90A3BF] font-normal outline-none' placeholder='Your title' />
-                    </div>
-                    <div className='flex flex-col gap-4'>
-                        <div className='text-[16px] text-[#1A202C] font-semibold'>
-                            Availability To
-                        </div>
-                        <input type="text" name="availableTo" value={input.availableTo} onChange={handleInputChange} className='bg-[#F6F7F9] rounded-[10px] h-14 w-96 pl-6 text-[14px] text-[#90A3BF] font-normal outline-none' placeholder='Your title' />
-                    </div>
+                    
+
+
                 </div>
                 <div className='text-[16px] text-[#1A202C] font-bold mt-10 mb-4 '>
                     Upload Images
@@ -212,18 +204,115 @@ const AddCars = () => {
                         High resolution images (png, jpg, gif)
                     </div>
                 </div>
-                <button onClick={print} className='bg-[#3563E9] text-white text[16px] font-bold rounded-lg h-14 w-[140px] mt-10 ml-auto'>
+                <button onClick={handleClickApi} className='bg-[#3563E9] text-white text[16px] font-bold rounded-lg h-14 w-[140px] mt-10 ml-auto'>
                     Rent Now
                 </button>
-                <button onClick={handleClickApi} className='bg-[#3563E9] text-white text[16px] font-bold rounded-lg h-14 w-[140px] mt-10 ml-auto'>
+                {/* <button onClick={handleClickApi} className='bg-[#3563E9] text-white text[16px] font-bold rounded-lg h-14 w-[140px] mt-10 ml-auto'>
                     Hit api
-                </button>
+                </button> */}
             </div>
-            {showConfirmation &&
+            {/* {showConfirmation &&
                 <CarRentConfirmation />
-            }
+            } */}
         </div>
     )
 }
 
 export default AddCars;
+
+
+
+
+
+
+
+
+
+
+
+
+
+{/* <div>
+    <label htmlFor="dropdown"></label>
+    <select id="dropdown" className='bg-[#F6F7F9] rounded-[10px] h-14 w-96 pl-6 text-[14px] text-[#90A3BF] font-normal outline-none' value={selectedOption} onChange={handleOptionChange}>
+        {options.map((option) => (
+        <option key={option} value={option}>{option}</option>
+        ))}
+    </select>
+</div> */}
+
+
+// const handleInputChange = (event) => {
+    //     const { name, value, files } = event.target;
+    //     if (name === "image") {
+        //         setInput((prevFormData) => ({
+            //             ...prevFormData,
+            //             [name]: [...prevFormData[name], ...files],
+            //         }));
+            //     } else {
+                //         setInput((prevFormData) => ({
+                    //             ...prevFormData,
+                    //             [name]: value,
+                    //         }));
+                    //     }
+                    // };
+                    
+                    // const handleImageChange = (event) => {
+                        //     setInput((prevFormData) => ({
+                            //         ...prevFormData,
+                            //         // image: event.target.files[0],
+                            //     }));
+                            // };
+                            
+
+
+
+
+
+
+
+
+
+                            
+                                        // response?.error?.data?.message == "Unauthorized" ? navigate('/login') : "";
+                                        // const response = await addCar({
+                                        //     "name": "Mustang",
+                                        //     "brand": "Ford",
+                                        //     "rent": 10000,
+                                        //     "location": "Pakistan",
+                                        //     "userId": "64132c30a362a5e0d499b3fa",
+                                        //     "image": input.image,
+                                        // });
+                
+                
+                
+                
+                                        // <div className='text-[18px] text-[#3563E9] font-extrabold mt-10 mb-9'>
+                //     Pickup  Info
+                // </div>
+                // <div className='flex flex-wrap justify-between gap-6'>
+                //     <div className='flex flex-col gap-4'>
+                //         <div className='text-[16px] text-[#1A202C] font-semibold'>
+                //             Pickup Location
+                //         </div>
+                //         <input type="text" name="pickUp" value={input.pickUp} onChange={handleInputChange} className='bg-[#F6F7F9] rounded-[10px] h-14 w-96 pl-6 text-[14px] text-[#90A3BF] font-normal outline-none' placeholder='Your title' />
+                //     </div>
+                //     <div className='flex flex-col gap-4'>
+                //         <div className='text-[16px] text-[#1A202C] font-semibold'>
+                //             Drop Off Location
+                //         </div>
+                //         <input type="text" name="dropOff" value={input.dropOff} onChange={handleInputChange} className='bg-[#F6F7F9] rounded-[10px] h-14 w-96 pl-6 text-[14px] text-[#90A3BF] font-normal outline-none' placeholder='Your title' />
+                //     </div>
+                //     <div className='flex flex-col gap-4'>
+                //         <div className='text-[16px] text-[#1A202C] font-semibold'>
+                //             Availability From
+                //         </div>
+                //         <input type="text" name="availableFrom" value={input.availableFrom} onChange={handleInputChange} className='bg-[#F6F7F9] rounded-[10px] h-14 w-96 pl-6 text-[14px] text-[#90A3BF] font-normal outline-none' placeholder='Your title' />
+                //     </div>
+                //     <div className='flex flex-col gap-4'>
+                //         <div className='text-[16px] text-[#1A202C] font-semibold'>
+                //             Availability To
+                //         </div>
+                //         <input type="text" name="availableTo" value={input.availableTo} onChange={handleInputChange} className='bg-[#F6F7F9] rounded-[10px] h-14 w-96 pl-6 text-[14px] text-[#90A3BF] font-normal outline-none' placeholder='Your title' />
+                //     </div>
+                // </div>

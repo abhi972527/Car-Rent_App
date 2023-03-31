@@ -12,7 +12,7 @@ import * as  userController from "../controllers/user.js";
 
 router.post('/signUp', userController.register);
 router.post('/login', userController.login);
-// router.post('/editProfile', userController.editProfile);
+router.post('/editProfile/:id', userController.editProfile);
 // router.post('/editProfile', upload.fields([{name: 'images', maxCount: 1}]), userController.editProfile);
 
 // module.export = router;

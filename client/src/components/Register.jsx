@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useSignUpMutation } from '../services/carRent';
 
 const Register = () => {
+    const navigate = useNavigate();
     const [signUp, { data: userData, error: userDataError, isLoading },] = useSignUpMutation();
     const [input, setInput] = useState({
         name: '',
@@ -34,6 +35,9 @@ const Register = () => {
                 "password": input.password
             });
             console.log("🚀 ~ file: Register.jsx:30 ~ register ~ response:", response)
+            if(response.data.status == 200) {
+                navigate("/login")
+            }
         } catch (error) {
             console.log("🚀 ~ file: Register.jsx:26 ~ register ~ error:", error)
         }
@@ -44,7 +48,7 @@ const Register = () => {
     }
 
     if (userDataError) {
-        return <div>An error occurred: {error}</div>;
+        return <div>An error occurred</div>;
     }
 
     return (
@@ -83,7 +87,7 @@ const Register = () => {
                                     htmlFor="firstName"
                                     className="block mb-2 text-sm font-medium text-gray-900 "
                                 >
-                                    First Name
+                                    Name
                                     <input onChange={handleInputChange}
                                         type="text" name="name" value={input.name}
                                         className="form-input bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg  block w-full p-2.5"

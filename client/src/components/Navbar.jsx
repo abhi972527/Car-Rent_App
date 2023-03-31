@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation, Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { clearUser } from '../app/features/userSlice';
 
@@ -19,6 +19,7 @@ const links = [
 ];
 
 const Navbar = () => {
+    const navigate = useNavigate();
     const user = useSelector((state) => state.user.user)
     const dispatch = useDispatch();
     console.log("🚀 ~ file: Navbar.jsx:23 ~ Navbar ~ user:", user)
@@ -26,6 +27,7 @@ const Navbar = () => {
 
     const logout = () => {
         dispatch(clearUser());
+        navigate("/");
     }
 
     return (
@@ -48,7 +50,7 @@ const Navbar = () => {
                         <div className='flex gap-[30px]'>
                             <Link to="/profile">
                                 <div className='h-[44px] w-[44px] rounded-full border flex items-center justify-center text-[25px] font-extrabold cursor-pointer'>
-                                    {user.data.name[0]}
+                                    {user?.data?.name[0]}
                                 </div>
                             </Link>
                             <button onClick={logout} className='h-[44px] w-[110px] rounded-[10px] bg-[#ED3F3F] text-[#FFFFFF] text-[16px] font-semibold'>

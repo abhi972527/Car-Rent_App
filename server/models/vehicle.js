@@ -3,33 +3,39 @@ import mongoose from "mongoose";
 const vehicle = new mongoose.Schema({
     name: {
         type: String,
+        trim: true,
+        required: [true, "can't be blank"],
+        match: [/^[a-zA-Z0-9 ]+$/, 'is invalid']
     },
     brand: {
         type: String,
+        trim: true,
+        required: [true, "can't be blank"],
+        match: [/^[a-zA-Z0-9 ]+$/, 'is invalid']
     },
     rent: {
         type: Number,
+        require: true,
     },
     capacity: {
         type: Number,
+        require: false,
     },
     carType: {
         type: String,
+        require: false,
     },
     location: {
         type: String,
+        require: true,
     },
     fuelCapacity: {
         type: Number,
+        require: false,
     },
-    transmission: {
+    engineType: {
         type: String,
-    },
-    wishlist: {
-        type: Boolean,
-    },
-    availability: {
-        type: Boolean,
+        require: false,
     },
     image: {
         type: String,
@@ -43,5 +49,3 @@ const vehicle = new mongoose.Schema({
 )
 
 export const Vehicle = mongoose.model("vehicle", vehicle)
-
-// export default Vehicle;

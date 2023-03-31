@@ -7,24 +7,24 @@ import { secretKey } from "../config/tokenKeys.js";
 export const register = async (req, res) => {
     try {
         console.log("🚀 ~ file: user.js:8 ~ register ~ req.body:", req.body)
-        let { name, email } = req.body
-        if (!name || !email) return res.send({
-            status: false,
-            message: "Required name email and mobile",
+        let { name, email, password } = req.body
+        if (!name || !email || !password) return res.status(400).json({
+            status: 400,
+            message: "Required name email and password",
         })
         let isExist = await userService.findEmail({ email })
         console.log("🚀 ~ file: userController.js:10 ~ exports.register= ~ isExist:", isExist)
-        if (isExist) return res.send({
-            status: false,
+        if (isExist) return res.status(400).json({
+            status: 400,
             message: "Email already exist",
         })
         let obj = {
             name,
             email,
-            phone: req.body.password,
+            password,
         }
         let data = await userService.saveUser(obj)
-        if (!data) return res.send({
+        if (!data) return res.status(400).json({
             status: 400,
             message: "Internal error",
         })
@@ -35,7 +35,10 @@ export const register = async (req, res) => {
         })
     } catch (error) {
         console.log("🚀 ~ file: userController.js:5 ~ register ~ error:", error)
-        return error;
+        return res.status(400).json({
+            status: 400,
+            message: error.message
+        });
     }
 }
 
@@ -43,39 +46,43 @@ export const login = async (req, res) => {
     console.log("🚀 ~ file: user.js:41 ~ login ~ req:", req.body)
     try {
         let { email, password } = req.body;
-        if (!email || !password) return res.send({
-            status: false,
+        if (!email || !password) return res.status(400).json({
+            status: 400,
             message: "Email and password required"
         })
         // const data = await userService.getUser(email, password);
-        let isExistEmail = await userService.findEmail({ email })
-        console.log("🚀 ~ file: user.js:50 ~ login ~ isExistEmail:", isExistEmail)
-        if (!isExistEmail) return res.send({
-            status: false,
+        let ifEmailExist = await userService.findEmail({ email })
+        console.log("🚀 ~ file: user.js:50 ~ login ~ ifEmailExist:", ifEmailExist)
+        if (!ifEmailExist) return res.status(400).json({
+            status: 400,
             message: "Id doesn't  exist",
         })
-        let passwordQuery = {
-            email,
-            phone: password
-        }
-        let isExistPassword = await userService.findEmail(passwordQuery)
-        console.log("🚀 ~ file: user.js:56 ~ login ~ isExistPassword:", isExistPassword)
-        if (!isExistPassword) return res.send({
-            status: false,
+        // let passwordQuery = {
+        //     email,
+        //     phone: password
+        // }
+        // let isExistPassword = await userService.findEmail(passwordQuery)
+        // if(password != ifEmailExist.phone)
+        // console.log("🚀 ~ file: user.js:56 ~ login ~ isExistPassword:", isExistPassword)
+        if (password != ifEmailExist.password) return res.status(400).json({
+            status: 400,
             message: "Password is wrong",
         })
-        console.log("🚀 ~ file: user.js:46 ~ login ~ isExistEmail:", isExistEmail)
-        const token = jwt.sign({ email }, secretKey, { expiresIn: '1m' });
-        // res.cookie('token', token, { httpOnly: false, domain: 'localhost' });
+        console.log("🚀 ~ file: user.js:46 ~ login ~ ifEmailExist:", "Password verified")
+        const token = jwt.sign({ email }, secretKey, { expiresIn: '1hr' });
+        // res.cookie('token', token);
         console.log("🚀 ~ file: user.js:69 ~ login ~ token:", token)
         return res.send({
             status: 200,
-            data: isExistEmail,
+            data: ifEmailExist,
             message: "Successfully logged in",
             token: token,
         })
     } catch (error) {
-        return error
+        return res.status(400).json({
+            status: 400,
+            message: error.message
+        });
     }
 }
 
@@ -83,8 +90,8 @@ export const editProfile = async (req, res) => {
     try {
         console.log("🚀 ~ file: user.js:42 ~ editProfile ~ req.body:", req.body)
         let { image, name, phone, id } = req.body;
-        if (!id) return res.send({
-            status: false,
+        if (!id) return res.status(400).json({
+            status: 400,
             message: "id required",
         })
         const obj = {
@@ -95,7 +102,7 @@ export const editProfile = async (req, res) => {
             obj.image = process.env.BASE_URL + "profileImages/" + req.file.filename
         }
         let data = await userService.updateProfile(id, obj);
-        if (!data) return res.send({
+        if (!data) return res.status(400).json({
             status: 400,
             message: "Error updating profile",
         })
@@ -106,6 +113,9 @@ export const editProfile = async (req, res) => {
         })
     } catch (error) {
         console.log("🚀 ~ file: userController.js:41 ~ exports.editProfile= ~ error:", error)
-        return error;
+        return res.status(400).json({
+            status: 400,
+            message: error.message
+        });
     }
 }

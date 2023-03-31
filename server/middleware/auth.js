@@ -2,8 +2,10 @@ import jwt from "jsonwebtoken";
 import { secretKey } from "../config/tokenKeys.js";
 
 export const authenticateUser = (req, res, next) => {
-    console.log("🚀 ~ file: auth.js:5 ~ authenticateUser ~ req:", req.headers)
+    // console.log("🚀 ~ file: auth.js:5 ~ authenticateUser ~ req:", req.headers)
     const token = req.cookies.token || req.headers.authorization;
+    // console.log("🚀 ~ file: auth.js:7 ~ authenticateUser ~ req.headers.authorization:", req.headers.authorization)
+    // console.log("🚀 ~ file: auth.js:7 ~ authenticateUser ~ req.cookies.token:", req.cookies.token)
     console.log("🚀 ~ file: auth.js:6 ~ authenticateUser ~ token:", token)
     if (!token) {
         return res.status(401).json({ message: 'Unauthorized' });

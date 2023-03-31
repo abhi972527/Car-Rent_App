@@ -1,8 +1,4 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import Cookies from 'js-cookie';
-// import { useSelector } from 'react-redux';
-
-// const token = useSelector((state) => state.user.user.token);
 
 let URL = "http://localhost:8000/api/"
 
@@ -10,19 +6,6 @@ export const carRentApi = createApi({
     reducerPath: 'carRentApi',
     baseQuery: fetchBaseQuery({
         baseUrl: URL,
-        // prepareHeaders: (headers, { getState }) => {
-        //     console.log("🚀 ~ file: carRent.js:14 ~ getState:", getState)
-        //     // const token = Cookies.get('token');
-        //     // const token = useSelector((state) => state.user.user.token);
-        //     const token = getState().user?.user?.token;
-        //     console.log("🚀 ~ file: carRent.js:18 ~ token:", token)
-        //     if (token) {
-        //         console.log("🚀 ~ file: carRent.js:19 ~ token:", token)
-        //         headers.set('Authorization', token);
-        //     }
-        //     headers.set('Content-Type', 'application/json');
-        //     return headers;
-        // },
     }),
     endpoints: (builder) => ({
         signUp: builder.mutation({
@@ -41,7 +24,19 @@ export const carRentApi = createApi({
         }),
         // get car by type
         getCar: builder.query({
-            query: (filter) => `vehicle/`,
+            query: (filter) => {
+                return {
+                    url: `vehicle?{...filter}`,
+                    params: { filter: JSON.stringify(filter) },
+                }
+            },
+        }),
+        getCarByFilter: builder.mutation({
+            query: (body) => ({
+                url: 'vehicle/filter',
+                method: 'POST',
+                body,
+            }),
         }),
         // getItemById: builder.query({
         //     query: (id) => `items/${id}`,
@@ -64,5 +59,33 @@ export const {
     useSignUpMutation,
     useLoginMutation,
     useGetCarQuery,
+    useGetCarByFilterMutation,
     useAddCarMutation,
 } = carRentApi;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// prepareHeaders: (headers, { getState }) => {
+//     console.log("🚀 ~ file: carRent.js:14 ~ getState:", getState)
+//     // const token = Cookies.get('token');
+//     // const token = useSelector((state) => state.user.user.token);
+//     const token = getState().user?.user?.token;
+//     console.log("🚀 ~ file: carRent.js:18 ~ token:", token)
+//     if (token) {
+//         console.log("🚀 ~ file: carRent.js:19 ~ token:", token)
+//         headers.set('Authorization', token);
+//     }
+//     headers.set('Content-Type', 'application/json');
+//     return headers;
+// },

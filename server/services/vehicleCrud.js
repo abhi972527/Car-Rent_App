@@ -7,6 +7,7 @@ export const saveVehicle = async(vehicle) => {
         console.log("🚀 ~ file: vehicleCrud.js:6 ~ saveVehicle ~ data:", data)
         return data;
     } catch (error) {
+        console.log("🚀 ~ file: vehicleCrud.js:10 ~ saveVehicle ~ error:", error)
         return false;
     }
 }
