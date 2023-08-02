@@ -19,14 +19,18 @@ const persistedReducer = persistReducer(persistConfig, combineReducers({
 
 const store = configureStore({
     reducer: persistedReducer,
-    middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware().concat(carRentApi.middleware),
+    // middleware: (getDefaultMiddleware) =>
+    //     getDefaultMiddleware().concat(carRentApi.middleware),
     // middleware: (getDefaultMiddleware) => getDefaultMiddleware({
     //     thunk: {
     //         extraArgument: carRentApi,
     //     },
     //     serializableCheck: false,
     // }),
+    middleware: getDefaultMiddleware =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }).concat(carRentApi.middleware),
 })
 
 // const rootReducer = combineReducers({

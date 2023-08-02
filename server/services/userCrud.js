@@ -8,17 +8,32 @@ export const findEmail = async (element) => {
         console.log("🚀 ~ file: userCrud.js:8 ~ findEmail ~ data:", data)
         return data;
     } catch (error) {
-        return false
+        return false;
     }
+}
+
+export const verifyPassword = async (passwordQuery, isExistEmail) => {
+    try {
+        console.log("🚀 ~ file: userCrud.js:16 ~ verifyPassword ~ passwordQuery:", passwordQuery)
+        console.log("🚀 ~ file: userCrud.js:16 ~ verifyPassword ~ isExistEmail:", isExistEmail)
+        if(passwordQuery.password == isExistEmail.password) {
+            return true
+        }
+        return false
+        // let data = await userModel.User.findOne(element);
+    } catch (error) {
+        return false;
+    }
+
 }
 
 export const saveUser = async (obj) => {
     try {
-        let data = await User.create(obj);
+        let data = await userModel.User.create(obj);
         return data;
     } catch (error) {
         console.log("🚀 ~ file: userCrud.js:18 ~ saveUser ~ error:", error)
-        return false
+        return false;
     }
 }
 

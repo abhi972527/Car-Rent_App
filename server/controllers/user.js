@@ -7,24 +7,24 @@ import { secretKey } from "../config/tokenKeys.js";
 export const register = async (req, res) => {
     try {
         console.log("🚀 ~ file: user.js:8 ~ register ~ req.body:", req.body)
-        let { name, email } = req.body
-        if (!name || !email) return res.send({
+        let { name, email, password } = req.body
+        if (!name || !email || !password ) return res.status(400).send({
             status: false,
-            message: "Required name email and mobile",
+            message: "Required name email and password",
         })
         let isExist = await userService.findEmail({ email })
         console.log("🚀 ~ file: userController.js:10 ~ exports.register= ~ isExist:", isExist)
-        if (isExist) return res.send({
+        if (isExist) return res.status(400).send({
             status: false,
             message: "Email already exist",
         })
         let obj = {
             name,
             email,
-            phone: req.body.password,
+            password,
         }
         let data = await userService.saveUser(obj)
-        if (!data) return res.send({
+        if (!data) return res.status(400).send({
             status: 400,
             message: "Internal error",
         })
@@ -35,7 +35,11 @@ export const register = async (req, res) => {
         })
     } catch (error) {
         console.log("🚀 ~ file: userController.js:5 ~ register ~ error:", error)
-        return error;
+        // return error;
+        return res.status(500).send({
+            status: 500,
+            message: "Internal server error.",
+        });
     }
 }
 
@@ -50,17 +54,17 @@ export const login = async (req, res) => {
         // const data = await userService.getUser(email, password);
         let isExistEmail = await userService.findEmail({ email })
         console.log("🚀 ~ file: user.js:50 ~ login ~ isExistEmail:", isExistEmail)
-        if (!isExistEmail) return res.send({
+        if (!isExistEmail) return res.status(400).send({
             status: false,
-            message: "Id doesn't  exist",
+            message: "Id doesn't exist",
         })
         let passwordQuery = {
             email,
-            phone: password
+            password
         }
-        let isExistPassword = await userService.findEmail(passwordQuery)
+        let isExistPassword = await userService.verifyPassword(passwordQuery, isExistEmail)
         console.log("🚀 ~ file: user.js:56 ~ login ~ isExistPassword:", isExistPassword)
-        if (!isExistPassword) return res.send({
+        if (!isExistPassword) return res.status(400).send({
             status: false,
             message: "Password is wrong",
         })
@@ -75,7 +79,11 @@ export const login = async (req, res) => {
             token: token,
         })
     } catch (error) {
-        return error
+        // return error
+        return res.status(500).send({
+            status: 500,
+            message: "Internal server error.",
+        });
     }
 }
 
@@ -106,6 +114,10 @@ export const editProfile = async (req, res) => {
         })
     } catch (error) {
         console.log("🚀 ~ file: userController.js:41 ~ exports.editProfile= ~ error:", error)
-        return error;
+        // return error;
+        return res.status(500).send({
+            status: 500,
+            message: "Internal server error.",
+        });
     }
 }

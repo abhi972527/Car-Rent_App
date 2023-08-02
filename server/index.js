@@ -28,7 +28,7 @@ app.use(`${API_PREFIX}/user`, userRouter)
 app.use(`${API_PREFIX}/vehicle`, vehicleRouter)
 
 
-const url = process.env.DB
+const url = process.env.DB || "mongodb+srv://akc972527:npza43SKJFP5yuep@clusterswati.73qfujt.mongodb.net/?retryWrites=true&w=majority"
 const PORT = process.env.PORT || 5000;
 const server = async () => {
     try {

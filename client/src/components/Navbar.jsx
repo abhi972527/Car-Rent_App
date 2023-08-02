@@ -48,7 +48,8 @@ const Navbar = () => {
                         <div className='flex gap-[30px]'>
                             <Link to="/profile">
                                 <div className='h-[44px] w-[44px] rounded-full border flex items-center justify-center text-[25px] font-extrabold cursor-pointer'>
-                                    {user.data.name[0]}
+                                    {/* {user.data.name[0]} */}
+                                    a
                                 </div>
                             </Link>
                             <button onClick={logout} className='h-[44px] w-[110px] rounded-[10px] bg-[#ED3F3F] text-[#FFFFFF] text-[16px] font-semibold'>

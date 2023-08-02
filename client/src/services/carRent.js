@@ -4,7 +4,7 @@ import Cookies from 'js-cookie';
 
 // const token = useSelector((state) => state.user.user.token);
 
-let URL = "http://localhost:8000/api/"
+let URL = "http://localhost:5000/api/"
 
 export const carRentApi = createApi({
     reducerPath: 'carRentApi',
